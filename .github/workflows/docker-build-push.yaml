@@ -33,7 +33,7 @@ jobs:
       - name: Delete old packages
         uses: actions/delete-package-versions@v4
         with:
-          package-name: uptime-reporter
+          package-name: wireguard-uptimekuma-reporter
           package-type: container
           min-versions-to-keep: 5
 
