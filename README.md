@@ -33,16 +33,4 @@ name = "idk2"
 uptime_api_key = "put_idk2_monitor_push_api_here"
 ```
 and the `wg-configs` folder contains the actual Wireguard config files  
-then use this docker compose to run the service
-```
-  wireguard-uptimekuma-reporter:
-    image: ghcr.io/arian8j2/wireguard-uptimekuma-reporter
-    volumes:
-      - ./reporter/:/app/
-    cap_add:
-      - SYS_MODULE
-      - NET_ADMIN
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-    restart: unless-stopped
-```
+then use the example docker compose file to run the service

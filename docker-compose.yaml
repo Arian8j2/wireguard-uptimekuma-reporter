@@ -1,0 +1,15 @@
+services:
+  reporter:
+    image: ghcr.io/arian8j2/wireguard-uptimekuma-reporter
+    volumes:
+      - ./reporter/:/app/
+    privileged: true # needed for creating tunnel
+    init: true # wireguard-go cleanup needs init system
+    cap_add:
+      - SYS_MODULE
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
