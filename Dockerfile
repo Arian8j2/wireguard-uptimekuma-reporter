@@ -8,11 +8,15 @@ WORKDIR /app
 COPY . .
 RUN cargo build --release --target x86_64-unknown-linux-musl
 
+# amnezia
+FROM ghcr.io/arian8j2/wireguard:amnezia as amnezia
+
 # runner
 FROM alpine:3.19.2
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/uptime-reporter /bin/uptime-reporter
+COPY --from=amnezia /bin/wg-quick /bin/wg /bin/wireguard-go /bin
 
-RUN apk add --no-cache curl iputils-ping wireguard-tools
+RUN apk add --no-cache curl iputils-ping bash
 
 VOLUME /app
 WORKDIR /app

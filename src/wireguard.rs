@@ -13,7 +13,7 @@ pub async fn create_interface(name: &str) -> anyhow::Result<()> {
         .await
         .with_context(|| format!("couldn't read config file at {config_file_path}"))?;
 
-    utils::run_command("ip", &["link", "add", name, "type", "wireguard"]).await?;
+    utils::run_command("wireguard-go", &[name]).await?;
 
     // stripped version of common config is needed because `wg setconf` doesn't accept many usual
     // attributes like `MTU`, `DNS`, `Address` and ...
