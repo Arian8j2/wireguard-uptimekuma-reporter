@@ -6,7 +6,7 @@ tests wireguard config files to see if these tests succeed:
 - `curl google.com`
 - `ping 1.1.1.1`
 
-(curl is treated more important than the ping, so if the ping fails and the curl succeed, it will report status is up but the otherwise is not true)  
+(ping is treated more important than the curl, so if the curl fails and the ping succeed, it will report status is up but the otherwise is not true)  
 
 
 and if the tests succeed it will send push api to **uptime-kuma** server, so for this to work you need to first create some monitors with `Push` type
