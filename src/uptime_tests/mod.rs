@@ -3,8 +3,17 @@ mod ping;
 
 use crate::uptime_kuma;
 use anyhow::ensure;
+use std::sync::LazyLock;
 
-const MAX_ACCEPTABLE_PACKET_LOST: f32 = 15.0;
+static MAX_ACCEPTABLE_PACKET_LOST: LazyLock<f32> = LazyLock::new(|| {
+    if let Ok(var) = std::env::var("MAX_ACCEPTABLE_PACKET_LOST") {
+        var.parse()
+            .inspect(|val| tracing::info!("using max acceptable packet lost of {val}"))
+            .expect("MAX_ACCEPTABLE_PACKET_LOST env var must be float")
+    } else {
+        15.0
+    }
+});
 
 /// runs set of tests that indicates the wireguard interface is working or not
 /// # Returns
@@ -23,7 +32,7 @@ pub async fn do_all_tests(interface_name: &str) -> anyhow::Result<uptime_kuma::P
         average_ping,
     } = ping::ping_some_host(interface_name).await?;
     ensure!(
-        packet_lost < MAX_ACCEPTABLE_PACKET_LOST,
+        packet_lost < *MAX_ACCEPTABLE_PACKET_LOST,
         "so much packet lost {packet_lost}"
     );
 
