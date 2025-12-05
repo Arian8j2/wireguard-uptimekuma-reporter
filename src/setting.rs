@@ -1,11 +1,8 @@
 use anyhow::Context;
-use lazy_static::lazy_static;
+use std::sync::LazyLock;
 
-// setting is global because i'm lazy, there is no good reason for it to be global
-lazy_static! {
-    pub static ref SETTING: Setting = load_setting().expect("cannot load setting");
-}
-
+pub static SETTING: LazyLock<Setting> =
+    LazyLock::new(|| load_setting().expect("cannot load setting"));
 const SETTING_FILE_PATH: &str = "./setting.toml";
 
 #[derive(serde::Deserialize, Clone)]
